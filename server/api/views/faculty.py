@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 from rest_framework.response import Response
@@ -26,7 +25,7 @@ class FacultyDetailView(APIView):
         serializer = FacultySerializer(faculty)
         return Response(serializer.data)
 
-    def put(self, request, format=None):
+    def put(self, request, pk, format=None):
         faculty = self.get_object(pk)
         serializer = FacultySerializer(faculty, data=request.data)
         if serializer.is_valid():
@@ -35,11 +34,11 @@ class FacultyDetailView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, format=None):
+    def delete(self, request, pk, format=None):
         faculty = self.get_object(pk)
         faculty.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class FacultyListView(generics.ListAPIView):
+class FacultyListView(generics.ListCreateAPIView):
     queryset = FacultyModel.objects.all()
     serializer_class = FacultySerializer

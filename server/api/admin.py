@@ -13,5 +13,10 @@ class StudentAdmin(admin.ModelAdmin):
 
 @admin.register(TeacherModel)
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'faculty')
+    list_display = ('first_name', 'last_name')
+    readonly_fields=('created','updated')
+
+@admin.register(CourseModel)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('title',)
     readonly_fields=('created','updated')

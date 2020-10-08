@@ -5,29 +5,29 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import status
 
-from api.models import TeacherModel
-from api.serializers import TeacherSerializer
+from api.models import StudentModel
+from api.serializers import StudentSerializer
 
 import uuid
 
-class TeacherDetailView(APIView):
+class StudentDetailView(APIView):
 
-    # Manipulate a particulare teacher: get, create, delete
+    # Manipulate a particulare student: get, create, delete
 
     def get_object(self, pk):
         try:
-            return TeacherModel.objects.get(pk=uuid.UUID(pk))
+            return StudentModel.objects.get(pk=uuid.UUID(pk))
         except:
             raise Http404
 
     def get(self, request, pk, format=None):
-        teacher = self.get_object(pk)
-        serializer = TeacherSerializer(teacher)
+        student = self.get_object(pk)
+        serializer = StudentSerializer(student)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        teacher = self.get_object(pk)
-        serializer = TeacherSerializer(teacher, data=request.data)
+        student = self.get_object(pk)
+        serializer = StudentSerializer(student, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -35,10 +35,10 @@ class TeacherDetailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
-        teacher = self.get_object(pk)
-        teacher.delete()
+        student = self.get_object(pk)
+        student.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class TeacherListView(generics.ListCreateAPIView):
-    queryset = TeacherModel.objects.all()
-    serializer_class = TeacherSerializer
+class StudentListView(generics.ListCreateAPIView):
+    queryset = StudentModel.objects.all()
+    serializer_class = StudentSerializer

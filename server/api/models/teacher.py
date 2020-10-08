@@ -8,7 +8,6 @@ class TeacherModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=125)
     last_name = models.CharField(max_length=125)
-    faculty = models.ForeignKey(FacultyModel, on_delete=models.CASCADE)
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
