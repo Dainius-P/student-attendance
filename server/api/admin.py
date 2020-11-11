@@ -8,7 +8,7 @@ class FacultyAdmin(admin.ModelAdmin):
 
 @admin.register(StudentModel)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name')
+    list_display = ('id', 'first_name', 'last_name')
     readonly_fields=('created','updated')
 
 @admin.register(TeacherModel)
@@ -18,5 +18,5 @@ class TeacherAdmin(admin.ModelAdmin):
 
 @admin.register(CourseModel)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ('id', 'title',)
     readonly_fields=('created','updated')

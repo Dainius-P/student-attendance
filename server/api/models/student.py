@@ -1,14 +1,12 @@
-from .course import CourseModel
+from .teacher import TeacherModel
 
 from django.db import models
 
-import uuid
-
 class StudentModel(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     first_name = models.CharField(max_length=125)
     last_name = models.CharField(max_length=125)
-    courses = models.ManyToManyField(CourseModel)
+
+    teachers = models.ManyToManyField(TeacherModel)
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

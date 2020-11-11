@@ -1,4 +1,3 @@
-from .teacher import TeacherModel
 from .faculty import FacultyModel
 
 from django.db import models
@@ -6,11 +5,8 @@ from django.db import models
 import uuid
 
 class CourseModel(models.Model):
-    id = models.CharField(max_length=125, primary_key=True)
-
     title = models.CharField(max_length=125)
 
-    teachers = models.ManyToManyField(TeacherModel)
     faculty = models.ForeignKey(FacultyModel, on_delete=models.CASCADE)
 
     created = models.DateTimeField(auto_now_add=True)
