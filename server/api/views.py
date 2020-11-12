@@ -1,13 +1,14 @@
 from django.http import Http404
 
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
 
 from api.models import *
 from api.serializers import *
-
-from rest_framework.decorators import api_view
+from api.permissions import CustomPermissions
 
 import uuid
 
@@ -33,6 +34,7 @@ def update_object(serializer, object_, request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([CustomPermissions])
 def student_details(request, student_id, faculty_id=None, course_id=None, teacher_id=None, format=None):
     student = get_object(StudentModel, course_id)
 
@@ -50,6 +52,7 @@ def student_details(request, student_id, faculty_id=None, course_id=None, teache
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
+@permission_classes([CustomPermissions])
 def student_list(request, faculty_id=None, course_id=None, teacher_id=None, format=None):
     if request.method == 'POST':
         return create_object(StudentSerializer, request)
@@ -67,6 +70,7 @@ def student_list(request, faculty_id=None, course_id=None, teacher_id=None, form
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([CustomPermissions])
 def teacher_details(request, teacher_id, faculty_id=None, course_id=None, format=None):
     teacher = get_object(TeacherModel, teacher_id)
     if request.method == 'GET':
@@ -79,6 +83,7 @@ def teacher_details(request, teacher_id, faculty_id=None, course_id=None, format
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
+@permission_classes([CustomPermissions])
 def teacher_list(request, faculty_id=None, course_id=None, format=None):
     if request.method == 'POST':
         return create_object(TeacherSerializer, request)
@@ -93,6 +98,7 @@ def teacher_list(request, faculty_id=None, course_id=None, format=None):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([CustomPermissions])
 def course_details(request, course_id, faculty_id=None, format=None):
     course = get_object(CourseModel, course_id)
 
@@ -106,6 +112,7 @@ def course_details(request, course_id, faculty_id=None, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
+@permission_classes([CustomPermissions])
 def course_list(request, faculty_id=None, format=None):
     if request.method == 'POST':
         return create_object(CourseSerializer, request)
@@ -118,6 +125,7 @@ def course_list(request, faculty_id=None, format=None):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([CustomPermissions])
 def faculty_details(request, faculty_id, format=None):
     faculty = get_object(FacultyModel, faculty_id)
 
@@ -131,6 +139,7 @@ def faculty_details(request, faculty_id, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
+@permission_classes([CustomPermissions])
 def faculty_list(request, format=None):
     if request.method == 'POST':
         return create_object(FacultySerializer, request)
