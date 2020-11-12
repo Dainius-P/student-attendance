@@ -2,8 +2,6 @@ from .faculty import FacultyModel
 
 from django.db import models
 
-import uuid
-
 class CourseModel(models.Model):
     title = models.CharField(max_length=125)
 

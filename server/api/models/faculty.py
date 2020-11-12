@@ -1,7 +1,5 @@
 from django.db import models
 
-import uuid
-
 class FacultyModel(models.Model):
     title = models.CharField(max_length=125)
 

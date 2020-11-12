@@ -2,8 +2,6 @@ from .course import CourseModel
 
 from django.db import models
 
-import uuid
-
 class TeacherModel(models.Model):
     first_name = models.CharField(max_length=125)
     last_name = models.CharField(max_length=125)

@@ -57,15 +57,15 @@ def student_list(request, faculty_id=None, course_id=None, teacher_id=None, form
     if request.method == 'POST':
         return create_object(StudentSerializer, request)
     elif request.method == 'GET':
-        students = StudentModel.objects.all()
+        if faculty_id is not None and course_id is not None and teacher_id is not None:
+            students = StudentModel.objects.filter(
+                teachers__courses__faculty__pk=faculty_id,
+                teachers__courses__pk=course_id,
+                teachers__pk=teacher_id
+            )
+        else:
+            students = StudentModel.objects.all()
 
-        if teacher_id is not None:
-            students = students.filter(teachers__pk=teacher_id)
-        if course_id is not None:
-            students = students.filter(teachers__courses__pk=course_id)
-        if faculty_id is not None:
-            students = students.filter(teachers__courses__faculty__pk=faculty_id)
-        
         serializer = StudentSerializer(students, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -88,11 +88,13 @@ def teacher_list(request, faculty_id=None, course_id=None, format=None):
     if request.method == 'POST':
         return create_object(TeacherSerializer, request)
     elif request.method == 'GET':
-        teachers = TeacherModel.objects.all()
-        if faculty_id is not None:
-            teachers = teachers.filter(courses__faculty__pk=faculty_id)
-        if course_id is not None:
-            teachers = teachers.filter(courses__pk=course_id)
+        if faculty_id is not None and course_id is not None:
+            teachers = TeacherModel.objects.filter(
+                courses__faculty__pk=faculty_id,
+                courses__pk=course_id
+            )
+        else:
+            teachers = TeacherModel.objects.all()
 
         serializer = TeacherSerializer(teachers, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
