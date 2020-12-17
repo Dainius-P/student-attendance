@@ -1,10 +1,10 @@
 from django.http import Http404
 
+from rest_framework.generics import GenericAPIView
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import generics
-from rest_framework import status
+from rest_framework import status, permissions
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from api.models import *
 from api.serializers import *
@@ -36,7 +36,7 @@ def update_object(serializer, object_, request):
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([CustomPermissions])
 def student_details(request, student_id, faculty_id=None, course_id=None, teacher_id=None, format=None):
-    student = get_object(StudentModel, course_id)
+    student = get_object(StudentModel, student_id)
 
     if request.method == 'GET':
         serializer = StudentSerializer(student)
@@ -150,3 +150,14 @@ def faculty_list(request, format=None):
         serializer = FacultySerializer(faculties, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def logout(request, format=None):
+    try:
+        refresh_token = request.data["refresh_token"]
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+        return Response(status=status.HTTP_205_RESET_CONTENT)
+    except Exception as e:
+        return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
