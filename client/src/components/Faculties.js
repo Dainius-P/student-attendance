@@ -9,7 +9,8 @@ class Faculties extends Component {
       isLoaded: false,
       faculties: [],
       facultyTitle: "",
-      facultySelectedId: ""
+      facultySelectedId: "",
+      facultySelected: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.deleteFaculty = this.deleteFaculty.bind(this);
@@ -95,6 +96,54 @@ class Faculties extends Component {
 
   setSelectedFaculty(id){
     this.setState({facultySelectedId: id});
+    const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + Cookies.get('token') 
+        }
+    };
+    fetch('http://localhost:8000/api/faculties/' + this.state.facultySelectedId, requestOptions)
+        .then(response => {
+          console.log()
+          if(response.status === 200){
+            return response.json();
+          }
+        })
+        .then(data => {
+          if(data.length === 1){
+            this.setState({facultySelected: data[0]});
+            this.setState({facultyTitle: data[0].title});
+          }
+        });
+
+    event.preventDefault();
+  }
+
+  editFaculty(event){
+    const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer " + Cookies.get('token') 
+        },
+        body: JSON.stringify({ 
+          title: this.state.facultyTitle
+        })
+    };
+    fetch('http://localhost:8000/api/faculties/', requestOptions)
+        .then(response => {
+          if(response.status === 201){
+            return response.json();
+          } else {
+            console.log("could not update");
+          }
+        })
+        .then(data => {
+          this.facultiesList();
+        });
+
+    event.preventDefault();
   }
 
 
@@ -124,6 +173,29 @@ class Faculties extends Component {
                   <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" className="btn btn-danger">Delete</button>
+                  </div>
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div className="modal fade" id="facultyEditModal" tabIndex="-1" aria-labelledby="facultyEditModalLabel" aria-hidden="true">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="facultyEditModalLabel">Edit faculty</h5>
+                  <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form onSubmit={this.editFaculty}>
+                <div className="modal-body">
+                  <div className="mb-3">
+                    <label htmlFor="InputTitle" className="form-label">Faculty title</label>
+                    <input type="text" required className="form-control" value={this.state.facultyTitle} onChange={this.handleFacultyTitleChange} id="InputTitle"/>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" className="btn btn-warning">Edit</button>
                   </div>
                 </div>
                 </form>
@@ -180,6 +252,7 @@ class Faculties extends Component {
                     <div className="row">
                       <div className="col-sm">
                         <button type="button" onClick={() => this.setSelectedFaculty(item.id)} data-bs-toggle="modal" data-bs-target="#facultyDeleteModal" className="btn btn-danger btn-sm">Delete</button>
+                        <button type="button" onClick={() => this.setSelectedFaculty(item.id)} data-bs-toggle="modal" data-bs-target="#facultyEditModal" className="btn btn-warning btn-sm">Edit</button>
                       </div>
                     </div>
                   </td>

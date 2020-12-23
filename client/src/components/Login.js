@@ -53,7 +53,7 @@ class Courses extends Component {
         <main className="form-signin">
           <form onSubmit={this.handleSubmit}>
           <center>
-            <img className="mb-4" src={process.env.PUBLIC_URL + '/logo.png'} alt="" width="150" height="150" />
+            <img className="mb-4" src={process.env.PUBLIC_URL + '/logo.svg'} alt="" width="150" height="150" />
             <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
             <label htmlFor="inputUsername" className="visually-hidden">Username</label>
             <input type="text" id="inputUsername" value={this.state.username} onChange={this.handleUsernameChange} className="form-control" placeholder="Username" required autoFocus="" />

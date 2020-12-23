@@ -1,3 +1,7 @@
+@font-face {
+  font-family: "Oswald", Helvetica, Arial, sans-serif!important;
+}
+
 .form-signin {
   display: flex;
   align-items: center;

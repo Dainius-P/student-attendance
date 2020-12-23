@@ -22,7 +22,7 @@ class Navbar extends Component {
         <button className="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
-        <input className="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"/>
+        <input className="form-control form-control-dark w-100" type="text" placeholder="" aria-label="Search"/>
         <ul className="navbar-nav px-3">
           {this.state.token !== undefined
             ? <li className="nav-item text-nowrap"><a className="nav-link" href="#" onClick={this.signout}>Sign out</a></li>
